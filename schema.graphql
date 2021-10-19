@@ -6,9 +6,3 @@ type Soda @entity {
   poured: BigInt!
   lastPoured: BigInt!
 }
-
-type Collection @entity {
-  id: ID!
-  sodas: Soda!
-}
-

@@ -68,7 +68,8 @@ export function handleApproval(event: Approval): void {
   // - contract.totalSupply(...)
 }
 
-export function handleApprovalForAll(event: ApprovalForAll): void {}
+export function handleApprovalForAll(event: ApprovalForAll): void {
+}
 
 export function handleNameChanged(event: NameChanged): void {
   let soda = Soda.load(event.transaction.from.toHex())
@@ -78,7 +79,14 @@ export function handleNameChanged(event: NameChanged): void {
   soda.save();
 }
 
-export function handleOwnershipTransferred(event: OwnershipTransferred): void {}
+export function handleOwnershipTransferred(event: OwnershipTransferred): void {
+  let soda = Soda.load(event.transaction.from.toHex())
+  if (!soda) return;
+  soda.owner = event.transaction.from;
+  soda.poured = event.block.timestamp;
+  soda.lastPoured = soda.poured;
+  soda.save();
+}
 
 export function handleSodaPoured(event: SodaPoured): void {
   let soda = Soda.load(event.transaction.from.toHex())
