@@ -1,4 +1,3 @@
-import { BigInt } from "@graphprotocol/graph-ts"
 import {
   Pseudopops,
   Approval,
@@ -9,7 +8,7 @@ import {
   Transfer
 } from "../generated/Pseudopops/Pseudopops"
 
-import { Soda, Collection } from "../generated/schema";
+import { Soda } from "../generated/schema";
 
 export function handleApproval(event: Approval): void {
   // Entities can be loaded from the store using a string ID; this ID
