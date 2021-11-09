@@ -13,7 +13,7 @@ import { Soda } from "../generated/schema";
 export function handleApproval(event: Approval): void {
   // Entities can be loaded from the store using a string ID; this ID
   // needs to be unique across all entities of the same type
-  let entity = Soda.load(event.transaction.from.toHex())
+  let entity = new Soda(event.params.tokenId.toHex());
   if (!entity) return;
 
   // Entities only exist after they have been saved to the store;
@@ -71,35 +71,29 @@ export function handleApprovalForAll(event: ApprovalForAll): void {
 }
 
 export function handleNameChanged(event: NameChanged): void {
-  let soda = Soda.load(event.transaction.from.toHex())
-  if (!soda) return;
+  let soda = new Soda(event.params.tokenId.toHex());
 
   soda.name = event.params.newName;
   soda.save();
 }
 
 export function handleOwnershipTransferred(event: OwnershipTransferred): void {
-  let soda = Soda.load(event.transaction.from.toHex())
-  if (!soda) return;
-  soda.owner = event.transaction.from;
-  soda.poured = event.block.timestamp;
-  soda.lastPoured = soda.poured;
-  soda.save();
 }
 
 export function handleSodaPoured(event: SodaPoured): void {
-  let soda = Soda.load(event.transaction.from.toHex())
-  if (!soda) return;
+  let soda = new Soda(event.params.tokenId.toHex());
+  let contract =  Pseudopops.bind(event.address);
+
   soda.owner = event.transaction.from;
   soda.tokenId = event.params.tokenId;
   soda.poured = event.block.timestamp;
   soda.lastPoured = soda.poured;
+  soda.tokenURI = contract.tokenURI(event.params.tokenId);
   soda.save();
 }
 
 export function handleTransfer(event: Transfer): void {
-  let soda = Soda.load(event.transaction.from.toHex())
-  if (!soda) return;
+  let soda = new Soda(event.params.tokenId.toHex());
   soda.owner = event.params.to;
   soda.tokenId = event.params.tokenId;
   soda.poured = event.block.timestamp;

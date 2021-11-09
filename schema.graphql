@@ -5,4 +5,5 @@ type Soda @entity {
   name: String
   poured: BigInt!
   lastPoured: BigInt!
+  tokenURI: String
 }
